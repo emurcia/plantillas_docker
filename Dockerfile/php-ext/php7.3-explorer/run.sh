@@ -13,6 +13,9 @@ echo "user:$PASSWORD_USER_SSH" | chpasswd --md5
 echo "Habilitando puerto de escucha adicional 8080"
 echo "Listen 8080" >>  /etc/apache2/ports.conf
 
+echo "Habilitando el ServerName Global"
+echo "ServerName 127.0.0.1" >>  /etc/apache2/apache2.conf
+
 echo "Iniciando la instalacion de kodExplorer"
 mkdir /var/www/explorador
 cd /var/www/explorador/
