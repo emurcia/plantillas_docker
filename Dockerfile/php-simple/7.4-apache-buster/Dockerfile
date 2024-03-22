@@ -1,19 +1,11 @@
 FROM php:7.4-apache-buster
 LABEL maintainer "evermurcia.la@gmail.com"
 
-RUN cp /dev/null /etc/apt/sources.list \
-    && echo "deb http://archive.debian.org/debian/ buster main contrib non-free" >> /etc/apt/sources.list \
-    && echo "deb http://archive.debian.org/debian/ buster-proposed-updates main contrib non-free" >> /etc/apt/sources.list \
-    && echo "" >> /etc/apt/sources.list \
-    && echo "deb http://archive.debian.org/debian-security buster/updates main contrib non-free" >> /etc/apt/sources.list
-
-#Instalando Xdebug
-RUN pecl install xdebug \
-    && docker-php-ext-enable xdebug \
-    && echo "xdebug.overload_var_dump=On" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
-    && docker-php-ext-install opcache \
-    && docker-php-ext-enable opcache \
-    && echo "opcache.file_cache = /var/www/html/.opcache" >> /usr/local/etc/php/conf.d/docker-php-ext-opcache.ini
+#RUN cp /dev/null /etc/apt/sources.list \
+#    && echo "deb http://archive.debian.org/debian/ buster main contrib non-free" >> /etc/apt/sources.list \
+#    && echo "deb http://archive.debian.org/debian/ buster-proposed-updates main contrib non-free" >> /etc/apt/sources.list \
+#    && echo "" >> /etc/apt/sources.list \
+#    && echo "deb http://archive.debian.org/debian-security buster/updates main contrib non-free" >> /etc/apt/sources.list
 
 #Instalando apc
 RUN printf "\n" | pecl install apcu \
