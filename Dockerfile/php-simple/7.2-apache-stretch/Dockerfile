@@ -1,5 +1,5 @@
 FROM php:7.2-apache-stretch
-LABEL maintainer "evermurcia@hotmail.com"
+LABEL maintainer "evermurcia.la@gmail.com"
 
 RUN cp /dev/null /etc/apt/sources.list \
     && echo "deb http://archive.debian.org/debian/ stretch main contrib non-free" >> /etc/apt/sources.list \
