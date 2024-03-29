@@ -1,5 +1,5 @@
 FROM php:8.1-apache-buster
-LABEL maintainer "ever.murcia@goes.gob.sv"
+LABEL maintainer "evermurcia.la@gmail.com"
 
 ADD run.sh /usr/local/bin/run.sh
 RUN chmod 777 /usr/local/bin/run.sh
@@ -7,20 +7,7 @@ RUN chmod 777 /usr/local/bin/run.sh
 # Copiando mi version de php.ini
 COPY php.ini /usr/local/etc/php/
 
-#RUN cp /dev/null /etc/apt/sources.list \
-#    && echo "deb http://debian.salud.gob.sv/debian/ buster main contrib non-free" >> /etc/apt/sources.list \
-#    && echo "deb-src http://debian.salud.gob.sv/debian/ buster main contrib non-free" >> /etc/apt/sources.list \
-#    && echo "" >> /etc/apt/sources.list \
-#    && echo "deb http://debian.salud.gob.sv/debian/ buster-updates main contrib non-free" >> /etc/apt/sources.list \
-#    && echo "deb-src http://debian.salud.gob.sv/debian/ buster-updates main contrib non-free" >> /etc/apt/sources.list \
-#    && echo "" >> /etc/apt/sources.list \
-#    && echo "deb http://debian.salud.gob.sv/debian-security/ buster/updates main contrib non-free" >> /etc/apt/sources.list \
-#    && echo "deb-src http://debian.salud.gob.sv/debian-security/ buster/updates main contrib non-free" >> /etc/apt/sources.list
-
-
 EXPOSE 80
-EXPOSE 8080
-EXPOSE 22
 
 #Instalando Xdebug
 RUN pecl install xdebug \
@@ -42,7 +29,9 @@ RUN apt-get update \
     && docker-php-ext-install pdo pdo_pgsql pgsql \
     && docker-php-ext-install intl xml gd \
     && docker-php-ext-configure zip \
-    && docker-php-ext-install xsl
+    && docker-php-ext-install xsl \
+    && docker-php-ext-install soap \
+    && docker-php-ext-enable soap 
 
 # Instalando imagick
 RUN apt-get install -y libmagickwand-dev --no-install-recommends && pecl install imagick && docker-php-ext-enable imagick
@@ -55,18 +44,9 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
     && php composer-setup.php --install-dir=/usr/local/bin --filename=composer \
     && php -r "unlink('composer-setup.php');"
 
-
 ADD 000-default.conf /etc/apache2/sites-available/000-default.conf
-ADD 001-default.conf /etc/apache2/sites-available/001-default.conf
-
-RUN a2ensite 001-default
 
 WORKDIR /var/www/html/
 
 RUN a2enmod rewrite
 RUN a2enmod headers
-
-#Ejecutando archivo run.sh al crear el contenedor para pasar las variables de entorno a env.
-CMD /usr/local/bin/run.sh ; sleep infinity
-
-#NOTA: el ; sleep infinity es necesario al final para que no se salga o se cierre el contenedor
