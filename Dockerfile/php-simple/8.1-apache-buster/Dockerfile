@@ -1,9 +1,6 @@
 FROM php:8.1-apache-buster
 LABEL maintainer "evermurcia.la@gmail.com"
 
-ADD run.sh /usr/local/bin/run.sh
-RUN chmod 777 /usr/local/bin/run.sh
-
 # Copiando mi version de php.ini
 COPY php.ini /usr/local/etc/php/
 
